@@ -21,7 +21,7 @@ correr `ONBOARD` y operar su conocimiento.
 ## Operaciones (gatillos)
 | Verbo | Gatillo | Qué hace |
 |---|---|---|
-| `ONBOARD` | primera vez / cambio de empresa | Te entrevista y siembra `company-profile.md` + genes del sector. |
+| `ONBOARD` | primera vez / cambio de empresa | Aplica el manifiesto `onboard/company.yaml` (determinista, reproducible) → siembra perfil + genes del sector. La entrevista solo genera ese manifiesto. |
 | `INGEST <X>` | "ingiere / digiere esto" | Clasifica, crea/actualiza página con frontmatter, extrae conceptos, enlaza, actualiza index + log. |
 | `BULK INGEST` | "procesa todo raw/" | Corre INGEST sobre cada archivo de `raw/`; reporta y actualiza index. |
 | `QUERY <X>` | "busca / qué sabemos de" | Navega desde `index.md` por relaciones; responde citando páginas-fuente. |

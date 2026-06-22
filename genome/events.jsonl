@@ -1,1 +1,2 @@
 {"ts":"2026-06-22","type":"genome_seeded","target":"genome","signal":"scaffold inicial del sistema","diff":"∅ → genoma base: 3 genes fundamentales + 7 operativos + cápsula ingesta-de-fuente","approved_by":"user","status":"applied"}
+{"ts":"2026-06-22","type":"gene_edited","target":"gen-onboard","signal":"requisito de reproducibilidad: ONBOARD debe ser determinista, no solo entrevista","diff":"v1 (entrevista) → v2 (manifiesto onboard/company.yaml → aplicado determinista e idempotente)","approved_by":"user","status":"applied"}

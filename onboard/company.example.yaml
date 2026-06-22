@@ -1,0 +1,41 @@
+# =====================================================================
+# onboard/company.yaml — MANIFIESTO DE ONBOARD (fuente de verdad)
+# Copia este archivo a onboard/company.yaml, complétalo y aplica ONBOARD.
+# Mismo manifiesto -> mismo genoma. Es lo que hace REPRODUCIBLE la adaptación.
+# =====================================================================
+
+company:
+  name: "Acme Bots"                 # nombre de la empresa
+  sector: "agencia de automatización"
+  language: es                       # idioma principal del cerebro
+  domains: ["acmebots.com"]
+
+# Tipos de documento que maneja el negocio (guían la clasificación de INGEST)
+document_types: [propuesta, contrato, transcripcion-call, ticket]
+
+# Entidades clave: cada clave es una categoría -> carpeta en wiki/semantic/
+entities:
+  clientes: []
+  productos: ["bot-whatsapp"]
+  herramientas: ["n8n", "twilio"]
+
+# Glosario / siglas internas (el agente las respeta al ingerir y consultar)
+glossary:
+  MRR: "ingreso recurrente mensual"
+  lead: "prospecto que pidió información"
+
+roles:
+  contributors: ["ventas", "ops"]
+  mutation_approver: "fundador"      # quién aprueba mutaciones del genoma
+
+# Genes específicos del sector que ONBOARD siembra (pasan por la compuerta)
+seed_genes:
+  - id: gen-propuestas
+    trigger: "la fuente es una propuesta comercial"
+    rule: "Toda propuesta va a wiki/semantic/propuestas/ con precio, alcance y objeciones; enlázala al cliente."
+    target_tier: semantic
+
+# Taxonomía inicial de carpetas a crear por tier
+taxonomy:
+  semantic: [clientes, propuestas, casos-exito]
+  procedural: [sops-ventas]
