@@ -20,4 +20,7 @@ loop de memoria infinita de verdad, reemplaza cada `command` por un script que a
    y apunta los `command` de `settings.json` a ellos.
 3. Versiónalos en git como parte del genoma operativo.
 
-> Nota Windows: los `command` corren en shell. Usa rutas relativas a la raíz del repo.
+> **Nota importante (aprendida a la mala):** los `command` de los hooks corren en **bash**
+> (`/usr/bin/bash`), también en Windows — no en PowerShell. Entrecomilla siempre el texto con
+> comillas simples para que caracteres como `(`, `)`, `[`, `]` no rompan la sintaxis (fue el bug
+> de los stubs iniciales: `echo ... (stub)` reventaba). Usa rutas relativas a la raíz del repo.

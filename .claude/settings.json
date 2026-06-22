@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo [CEREBRO] SessionStart (stub): leer index.md + log.md reciente + genes activos. Ver .claude/hooks/README.md"
+            "command": "echo '[CEREBRO] SessionStart (stub): leer index.md + log.md reciente + genes activos. Ver .claude/hooks/README.md'"
           }
         ]
       }
@@ -16,7 +16,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo [CEREBRO] PreCompact (stub): volcar lo valioso de la sesion a wiki/working/ antes de compactar."
+            "command": "echo '[CEREBRO] PreCompact (stub): volcar lo valioso de la sesion a wiki/working/ antes de compactar.'"
           }
         ]
       }
@@ -26,7 +26,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo [CEREBRO] Stop (stub): escribir resumen episodico en wiki/episodic/ y correr EVOLVE en modo propuesta."
+            "command": "echo '[CEREBRO] Stop (stub): escribir resumen episodico en wiki/episodic/ y correr EVOLVE en modo propuesta.'"
           }
         ]
       }
