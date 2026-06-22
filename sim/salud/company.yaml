@@ -1,0 +1,89 @@
+# =====================================================================
+# sim/salud/company.yaml — MANIFIESTO DE ONBOARD (sandbox clínica / salud)
+# Empresa ficticia. Mismo manifiesto -> mismo genoma.
+# Datos de paciente SIEMPRE ficticios y anonimizados (jamás PII real).
+# =====================================================================
+
+company:
+  name: "Clínica Vida Serena"
+  sector: "salud — clínica ambulatoria multiespecialidad (atención primaria + urgencias menores)"
+  language: es
+  domains: ["vidaserena.clinic"]
+
+# Tipos de documento que maneja el negocio (guían la clasificación de INGEST)
+document_types:
+  - protocolo-clinico          # protocolo/guía de práctica con vigencia y revisión
+  - sop-asistencial            # procedimiento operativo (triaje, esterilización, etc.)
+  - historia-clinica           # episodio de paciente ANONIMIZADO (datos sensibles)
+  - registro-incidente         # evento adverso / cuasi-incidente de seguridad
+  - ficha-farmaco              # monografía de fármaco (vademécum interno)
+  - ficha-patologia            # descripción de patología / diagnóstico
+
+# Entidades clave: cada clave es una categoría -> carpeta en wiki/semantic/
+entities:
+  pacientes:    []             # SENSIBLE — solo seudónimos/ID interno, nunca nombre real
+  profesionales: ["dr-nunez-mi", "dra-soto-urg", "enf-rivas"]
+  protocolos:   ["sepsis-adulto", "dolor-toracico", "anafilaxia"]
+  farmacos:     ["adrenalina", "amoxicilina-clavulanico", "noradrenalina"]
+  patologias:   ["sepsis", "anafilaxia", "neumonia-adquirida-comunidad"]
+
+# Glosario / siglas internas (el agente las respeta al ingerir y consultar)
+glossary:
+  HC:    "historia clínica"
+  SOP:   "procedimiento operativo estándar (standard operating procedure)"
+  PII:   "información personal identificable (datos sensibles de paciente)"
+  EA:    "evento adverso — daño no intencionado asociado a la atención"
+  triaje: "clasificación de gravedad a la llegada del paciente (Manchester I–V)"
+  GPC:   "guía de práctica clínica"
+  qSOFA: "quick SOFA — score rápido de riesgo de sepsis (0–3)"
+  IM:    "intramuscular"
+  IV:    "intravenoso"
+  NAC:   "neumonía adquirida en la comunidad"
+  RCP:   "reanimación cardiopulmonar"
+
+roles:
+  contributors: ["medicina-interna", "urgencias", "enfermeria", "farmacia", "calidad-seguridad"]
+  mutation_approver: "director-medico"
+
+# Genes específicos del sector que ONBOARD siembra (pasan por la compuerta)
+seed_genes:
+  - id: gen-confidencialidad-paciente
+    trigger: "la fuente contiene datos de un paciente (historia clínica, episodio, identificador)"
+    rule: >
+      Ningún dato de paciente vive como conocimiento abierto en semantic/. Toda página
+      derivada de una historia clínica va a wiki/semantic/pacientes/ con
+      `confidential: true`, `pii: anonimizado` y un ID interno seudonimizado (nunca
+      nombre, documento ni contacto reales). NO se promueve ni se comparte fuera de su
+      tier. El conocimiento clínico generalizable (qué patología, qué tratamiento) se
+      separa a su ficha de patología/protocolo; la página de paciente solo enlaza
+      presenta_patologia / tratado_con / segun_protocolo. Si la fuente trae PII real,
+      INGEST se detiene y exige anonimización antes de continuar.
+    target_tier: semantic
+
+  - id: gen-vigencia-protocolo
+    trigger: "la fuente es un protocolo clínico, guía de práctica (GPC) o SOP asistencial"
+    rule: >
+      Todo protocolo lleva `valid_until` (fecha de caducidad) y `decay_rate: high`: un
+      protocolo vencido es PELIGROSO, no solo viejo. Si `last_reinforced + vigencia` ya
+      pasó o `valid_until` < hoy, la página se marca `status: vencido` y QUERY DEBE
+      anteponer una ADVERTENCIA de caducidad antes de citarlo, nunca afirmar con
+      confianza plena. Una versión nueva del protocolo enlaza `reemplaza` a la anterior
+      y la anterior pasa a `status: deprecado`. Versión vigente y vencida nunca coexisten
+      como activas.
+    target_tier: procedural
+
+  - id: gen-trazabilidad-clinica
+    trigger: "la fuente relaciona un fármaco, una patología y/o un protocolo de tratamiento"
+    rule: >
+      Mantén la tríada trazable fármaco <-> patología <-> protocolo con relaciones
+      tipadas: el protocolo `indica` el fármaco y `trata` la patología; el fármaco
+      `tratamiento_de` la patología; la patología `tratada_segun` el protocolo. Toda
+      ficha de fármaco enlaza al menos una patología o protocolo; ninguna queda huérfana.
+      Esto permite responder "qué fármaco da el protocolo X para la patología Y"
+      navegando el grafo sin leer todas las fuentes.
+    target_tier: semantic
+
+# Taxonomía inicial de carpetas a crear por tier
+taxonomy:
+  semantic:   [pacientes, profesionales, protocolos, farmacos, patologias, incidentes]
+  procedural: [sops-asistenciales, protocolos-clinicos]

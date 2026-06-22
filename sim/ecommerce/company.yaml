@@ -1,0 +1,81 @@
+# =====================================================================
+# sim/ecommerce/company.yaml — MANIFIESTO DE ONBOARD (sandbox e-commerce / retail)
+# Empresa ficticia. Mismo manifiesto -> mismo genoma.
+# =====================================================================
+
+company:
+  name: "TiendaNube Andina S.A.S."
+  sector: "e-commerce / retail — tienda online de hogar, cocina y deco"
+  language: es
+  domains: ["tiendanubeandina.com"]
+
+# Tipos de documento que maneja el negocio (guían la clasificación de INGEST)
+document_types:
+  - ficha-producto          # catálogo: SKU, specs, precio, inventario
+  - ficha-proveedor         # quién fabrica/distribuye cada SKU
+  - ticket-soporte          # incidencia de un cliente (envío, defecto, reembolso)
+  - politica                # devoluciones, garantía, envíos (documento estable)
+  - resena-cliente          # review de producto (señal blanda, baja confianza)
+
+# Entidades clave: cada clave es una categoría -> carpeta en wiki/semantic/
+entities:
+  productos:   ["SKU-CAF-2200", "SKU-OLL-0900"]   # se identifican por SKU estable
+  categorias:  ["cafeteras", "ollas-y-sartenes", "organizadores"]
+  proveedores: ["ElectroHogar-Import", "MenajeGlobal"]
+  clientes:    []           # se crean al ingerir tickets/reseñas
+  tickets:     []           # se crean al ingerir soporte
+
+# Glosario / siglas internas (el agente las respeta al ingerir y consultar)
+glossary:
+  SKU:  "stock keeping unit — referencia única y estable de producto"
+  RMA:  "return merchandise authorization — autorización de devolución"
+  PDP:  "product detail page — ficha de producto de cara al cliente"
+  SLA:  "service level agreement — tiempo de respuesta comprometido en soporte"
+  NPS:  "net promoter score — indicador de satisfacción"
+  stock: "unidades disponibles en almacén; cambia constantemente"
+  ASP:  "average selling price — precio medio de venta"
+
+roles:
+  contributors: ["catalogo", "soporte", "compras", "logistica"]
+  mutation_approver: "head-of-ecommerce"
+
+# Genes específicos del sector que ONBOARD siembra (pasan por la compuerta)
+seed_genes:
+  - id: gen-sku-identidad
+    trigger: "la fuente menciona un producto del catálogo (ficha, ticket o reseña)"
+    rule: >
+      El SKU es el identificador ESTABLE y único de cada producto: hay UNA sola página
+      por SKU en wiki/semantic/productos/<SKU>.md, sin importar cuántas fuentes lo
+      mencionen. Campos volátiles (precio, stock, estado) viven en esa misma página y se
+      ACTUALIZAN in situ (sube last_reinforced), nunca se duplican. Toda otra entidad
+      (ticket, reseña, lote de inventario) enlaza al producto vía relación tipada
+      `sobre_sku`, jamás recreando la ficha. Productos casi idénticos (mismo modelo,
+      distinto color/talla) son páginas separadas por SKU pero comparten `variante_de`.
+    target_tier: semantic
+
+  - id: gen-dato-volatil
+    trigger: "la fuente trae precio, stock/inventario o disponibilidad de un SKU"
+    rule: >
+      Precio e inventario son datos VOLÁTILES: en la ficha del producto se marcan con su
+      `decay_rate: high` y un campo `valido_a: <fecha>`, separados de los specs estables
+      (material, dimensiones, categoría) que llevan `decay_rate: low`. Una ficha de
+      producto puede tener confidence alta en sus specs y a la vez precio/stock vencidos:
+      al consultar, si `valido_a` es anterior a hoy, adviértelo y no afirmes el número
+      como vigente. Nunca borres el dato viejo: regístralo como reemplazado.
+    target_tier: semantic
+
+  - id: gen-sintesis-tickets
+    trigger: "se han ingerido 3+ tickets de soporte sobre el mismo SKU o mismo motivo"
+    rule: >
+      Tickets individuales son episódicos (decay_rate: high) y viven en
+      wiki/semantic/tickets/. Cuando 3+ tickets comparten SKU o causa raíz, crea/actualiza
+      una página de SÍNTESIS en wiki/semantic/sintesis/ (type: sintesis) que agrega el
+      patrón (motivo dominante, conteo, SKU afectado) y enlaza `agrega` a cada ticket y
+      `sobre_sku` al producto. La síntesis SÍ es conocimiento estable (decay_rate: low) y
+      puede disparar EVOLVE si revela un defecto sistémico de un producto o proveedor.
+    target_tier: semantic
+
+# Taxonomía inicial de carpetas a crear por tier
+taxonomy:
+  semantic:   [productos, categorias, proveedores, clientes, tickets, resenas, sintesis]
+  procedural: [sops-soporte, sops-devoluciones]

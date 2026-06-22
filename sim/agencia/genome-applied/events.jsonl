@@ -1,0 +1,3 @@
+{"ts":"2026-06-22T00:00:00Z","op":"onboard","action":"seed_gene","gen":"gen-precio-perecedero","version":1,"manifest":"company.yaml","approved_by":"user","note":"siembra ONBOARD FlujoLab: precios perecederos con valido_hasta + decay alto"}
+{"ts":"2026-06-22T00:00:00Z","op":"onboard","action":"seed_gene","gen":"gen-lead-a-cliente","version":1,"manifest":"company.yaml","approved_by":"user","note":"siembra ONBOARD FlujoLab: conversion lead->cliente con trazabilidad, sin borrar"}
+{"ts":"2026-06-22T00:00:00Z","op":"onboard","action":"seed_gene","gen":"gen-objecion-transversal","version":1,"manifest":"company.yaml","approved_by":"user","note":"siembra ONBOARD FlujoLab: objeciones como conocimiento transversal reutilizable"}
