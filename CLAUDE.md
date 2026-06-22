@@ -44,6 +44,7 @@ Las reglas completas viven en `genome/genes/`. Resumen:
 - [[gen-entidad-con-estado]] — entidad con `estado` se actualiza in-place, con evento de respaldo.
 - [[gen-confianza-por-fuente]] — la `confidence` inicial se ancla a la credibilidad de la fuente.
 - [[gen-sintesis-de-volumen]] — N eventos con clave común → página de síntesis; deriva a EVOLVE si hay riesgo.
+- [[gen-migracion-genoma]] — al cambiar el genoma, re-valida manifiesto y páginas y propone la migración.
 
 **Operativos**
 - [[gen-onboard]] · [[gen-ingest]] · [[gen-bulk-ingest]] · [[gen-query]] · [[gen-lint]] · [[gen-consolidate]] · [[gen-evolve]]
