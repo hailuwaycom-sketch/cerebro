@@ -28,6 +28,7 @@ correr `ONBOARD` y operar su conocimiento.
 | `LINT` | mantenimiento | Detecta huérfanos, contradicciones y páginas vencidas por `decay_rate`; propone y aplica tras OK. |
 | `CONSOLIDATE` | mantenimiento | Promueve conocimiento confirmado de tier (working→semantic), fusiona duplicados, baja confidence de lo no reforzado. |
 | `EVOLVE` | patrón repetido detectado | PROPONE mutación de genoma (nuevo/editar/deprecar gen). Aplica solo con OK + línea en events.jsonl. |
+| `AUDIT` | "auto-audítate / audita el cerebro" | Audita la base y PROPONE ≤3 mejoras de mayor impacto (contradicciones, vacíos, reglas obsoletas/redundantes), reproducible, con maker≠auditor y gate. Estado en `audit/runs/`. |
 
 ## Índice de genes activos
 Las reglas completas viven en `genome/genes/`. Resumen:
@@ -48,13 +49,17 @@ Las reglas completas viven en `genome/genes/`. Resumen:
 - [[gen-visualizacion]] — capa opcional de paneles (Obsidian/Dataview o reporte estático); ONBOARD la recomienda.
 
 **Operativos**
-- [[gen-onboard]] · [[gen-ingest]] · [[gen-bulk-ingest]] · [[gen-query]] · [[gen-lint]] · [[gen-consolidate]] · [[gen-evolve]]
+- [[gen-onboard]] · [[gen-ingest]] · [[gen-bulk-ingest]] · [[gen-query]] · [[gen-lint]] · [[gen-consolidate]] · [[gen-evolve]] · [[gen-auto-auditoria]]
 
 ## Mapa de la memoria (tiers de `wiki/`)
 - `working/` — observaciones recientes, `decay_rate: high`. Lo que el hook `PreCompact` vuelca aquí.
 - `episodic/` — resúmenes por sesión (los escribe el hook `Stop`).
 - `semantic/` — conocimiento consolidado: conceptos, entidades, fuentes, síntesis.
 - `procedural/` — SOPs y procesos de la empresa.
+
+## Auditoría (estado de corridas)
+- `audit/runs/<run-id>/` — corridas de la operación `AUDIT` (snapshot, maker, auditor,
+  propuestas). Estado operacional reproducible, claveado al SHA de git. Regla: [[gen-auto-auditoria]].
 
 ## Visualización (opcional, removible)
 - `dashboards/` — paneles Dataview (salud del genoma, salud del conocimiento, por sector); ver `dashboards/00-leeme.md`.

@@ -18,6 +18,7 @@ por las relaciones `[[...]]`. Mantener corto: solo páginas-ancla, no todo el co
 - Genes activos: carpeta `genome/genes/`.
 - Cápsulas: [[ingesta-de-fuente]].
 - Auditoría de mutaciones: `genome/events.jsonl`.
+- Auto-auditoría: operación `AUDIT` → corridas en `audit/runs/`. Regla: [[gen-auto-auditoria]].
 
 ## Memoria (anclas por tier)
 Aún vacío. Conforme ingieras fuentes, enlaza aquí las páginas-ancla de cada área.
