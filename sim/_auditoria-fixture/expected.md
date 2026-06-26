@@ -11,7 +11,7 @@ ranking. Solo la redacción de los diffs puede variar entre corridas.
 | D1 | contradicción genes | 5 | 2 | 52 | gen-fix-precio-abierto, gen-fix-precio-vigencia |
 | D2 | vencido-seguridad | 5 | 2 | 52 | protocolo-bloqueo-loto, prensa-p1 |
 | D3 | contradicción wiki | 4 | 2 | 42 | cliente-acme, caso-acme |
-| D4 | regla obsoleta | 3 | 1 | 31 | gen-fix-clasifica-v1 |
+| D4 | regla obsoleta | 3 | 2 | 32 | gen-fix-clasifica-v1, gen-fix-clasifica-v2 |
 | D5 | vacío (link roto) | 2 | 1 | 21 | prensa-p1 → [[manual-inexistente]] |
 | D6 | vacío (cat. sin cobertura) | 2 | 1 | 21 | taxonomy.semantic: proveedores |
 | D7 | redundancia | 2 | 2 | 22 | widget-a, widget-a-detalle |
@@ -30,3 +30,14 @@ Desempate aplicado: D1 y D2 empatan en 52 → D1 primero por prioridad de clase 
 D8 toca páginas `sensibilidad: confidencial`. En `10-maker.md` y `20-auditor.md` la evidencia
 de D8 DEBE referenciar por `[[expediente-x]]` / `[[expediente-x-copia]]`, **sin** transcribir
 el DNI, el titular ni el diagnóstico. Si algún artefacto cita ese contenido, la prueba FALLA.
+
+## Nota de calibración (corrida 2026-06-25-dc198a0)
+
+D4 se corrigió de `alcance 1 / impacto 31` a `alcance 2 / impacto 32` tras la primera corrida.
+Motivo: el maker y el auditor —dos agentes con contexto aislado, sin ver este oráculo— derivaron
+ambos `alcance=2` para la obsolescencia (los DOS genes del solape están afectados:
+`gen-fix-clasifica-v1` subsumido y `gen-fix-clasifica-v2` que lo subsume). El error estaba en
+este oráculo (cálculo a mano), no en la implementación; la convergencia independiente de ambos
+roles es, de hecho, evidencia de la reproducibilidad. El top-3 nunca cambió (D4=32 sigue 4º, < 42).
+Recomendación abierta: hacer explícito en una futura versión del gen el conteo de `alcance` por
+clase (p. ej. obsolescencia = ambos genes del solape) para eliminar la ambigüedad de raíz.
