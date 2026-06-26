@@ -14,4 +14,4 @@ relations:
 ---
 
 Prensa hidráulica P-1. Se interviene según [[protocolo-bloqueo-loto]].
-Referencia a [[manual-inexistente]] (página que no existe → vacío D5).
+Para el detalle de operación, ver [[manual-inexistente]].
