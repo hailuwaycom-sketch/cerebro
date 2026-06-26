@@ -1,0 +1,72 @@
+# =====================================================================
+# sim/academico/company.yaml — MANIFIESTO DE ONBOARD (grupo de investigación ficticio)
+# Sandbox de prueba del genoma base. Mismo manifiesto -> mismo genoma.
+# =====================================================================
+
+company:
+  name: "Grupo de Investigación Económica Andes"
+  sector: "academia — economía aplicada e investigación empírica"
+  language: es
+  domains: ["giea.uandes.edu.co"]
+
+# Tipos de documento que maneja el grupo (guían la clasificación de INGEST)
+document_types: [working-paper, paper-publicado, dataset, revision-par, preprint]
+
+# Entidades clave: cada clave es una categoría -> carpeta en wiki/semantic/
+entities:
+  investigadores: ["Valentina Ríos", "Carlos Mendoza", "Sofía Paredes"]
+  papers: ["WP-2024-07", "GIEA-2025-03"]
+  datasets: ["ENPH-2022", "DANE-IPC-2024"]
+  proyectos: ["Proyecto COLCIENCIAS FP-044-2023"]
+  convenios: []   # categoría declarada, sin páginas aún (vacío intencional)
+
+# Glosario / siglas internas
+glossary:
+  WP: "working paper — versión preliminar no arbitrada"
+  PP: "paper publicado — versión final en revista arbitrada"
+  ENPH: "Encuesta Nacional de Presupuestos de los Hogares (DANE)"
+  DANE: "Departamento Administrativo Nacional de Estadística"
+  IPC: "Índice de Precios al Consumidor"
+  elasticidad: "variación porcentual de la demanda ante variación del precio"
+  revision-par: "dictamen confidencial emitido por árbitro del journal"
+
+roles:
+  contributors: ["investigadores", "asistentes", "pasantes"]
+  mutation_approver: "investigador principal"
+
+# Confianza por tipo de fuente
+source_trust:
+  paper-publicado: 0.9
+  revisado-por-pares: 0.9
+  working-paper: 0.6
+  preprint: 0.5
+  dataset: 0.85
+  revision-par: 0.95   # alta confianza epistémica, baja difusión (confidencial)
+
+# Genes específicos del sector que ONBOARD siembra (pasan por la compuerta)
+seed_genes:
+  - id: gen-cita-trazable
+    trigger: "la página contiene una afirmación empírica cuantitativa (coeficiente, elasticidad, media, etc.)"
+    rule: "Toda afirmación empírica debe enlazar su dataset o paper-fuente mediante relation 'cita'. Si no existe página del dataset, INGEST la crea o deja la relación pendiente con tag 'cita-pendiente'. Sin trazabilidad de fuente, confidence <= 0.4."
+    target_tier: semantic
+
+  - id: gen-version-paper
+    trigger: "existe un working-paper y su versión publicada del mismo estudio"
+    rule: "El paper publicado (PP) se crea como página nueva y marca relation 'supersede' hacia el working-paper correspondiente. El WP baja a confidence <= 0.5 y recibe tag 'supersedido'; no se borra (preserva historial de estimaciones). En QUERY se prioriza siempre la versión publicada sobre el WP."
+    target_tier: semantic
+
+# Taxonomía inicial de carpetas a crear por tier
+taxonomy:
+  semantic: [investigadores, papers, datasets, proyectos, revisiones, convenios]
+  procedural: [sops-investigacion, guias-datos]
+
+# Tipos de relación declarados para este sector (extienden el set base)
+relation_types:
+  - cita          # afirmación empírica apoyada en fuente/dataset
+  - replica       # estudio que intenta replicar otro
+  - supersede     # versión publicada reemplaza working-paper
+  - deriva_de     # dataset derivado de otro (subconjunto, recodificación)
+  - revisado_por  # paper evaluado por un dictamen de revision-par
+
+# Umbral de síntesis: con >=3 eventos sobre la misma clave, proponer página de síntesis
+sintesis_umbral: 3
