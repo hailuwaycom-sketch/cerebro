@@ -1,12 +1,13 @@
 # expected.md — oráculo del fixture de auto-auditoría
 
 Derivado de la fórmula de `gen-auto-auditoria` (`impacto = severidad*10 + alcance`).
-Invariante reproducible (verificado con 3 derivaciones independientes; ver `regresion.md`):
-mismo estado (mismo SHA) + misma versión del gen ⇒ **mismo conjunto de candidatos y mismo
-top-3 (contenido y orden)**. Varían entre corridas: la redacción de los diffs y el valor exacto
-de `alcance` (±1) en clases con páginas citantes/relacionadas (`vencido-seguridad`,
-`regla obsoleta`) — no-determinismo aislado que NO afecta el top-3. Los `alcance` de esta tabla
-son una lectura válida (la que convergieron maker run 1 + auditor); ver la nota de calibración.
+**Desde v2 del gen, el conteo de `alcance` es explícito por clase** (página defectuosa + páginas
+citantes de primer nivel; ambos genes del par obsoleto; confidenciales SÍ cuentan), así que el
+±1 no-determinista que existía en v1 quedó **cerrado**. Invariante reproducible: mismo estado
+(mismo SHA) + misma versión del gen ⇒ **mismo conjunto de candidatos, mismos scores exactos y
+mismo top-3**. Lo único que varía entre corridas es la redacción de la prosa de los `diff`.
+Los `alcance` de esta tabla coinciden con la regla v2 (D2 vencido = página+citante = 2;
+D4 obsolescencia = ambos genes = 2).
 
 ## Conjunto de candidatos esperado (8)
 
