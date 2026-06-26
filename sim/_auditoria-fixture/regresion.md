@@ -79,11 +79,51 @@ lo subsume), eliminando la ambigüedad de raíz.
 
 ---
 
+## Reproducibilidad — segunda corrida independiente (maker fresco, contexto aislado)
+
+Se corrió un SEGUNDO maker sobre el MISMO estado del fixture (sin ver `expected.md`,
+`regresion.md` ni los artefactos del primer run). Resultado:
+
+- **Conjunto de candidatos:** idéntico — los mismos 8 defectos, las mismas 6 clases. ✓
+- **Top-3:** idéntico en contenido Y orden — [contradicción-genes-precio, protocolo-vencido,
+  cliente-acme↔caso-acme]. ✓
+- **Scores exactos:** una divergencia de ±1 en `alcance`. El segundo maker contó el defecto
+  `vencido-seguridad` (protocolo) con `alcance = 1` (solo la página vencida) → impacto **51**,
+  mientras el primer maker + auditor contaron `alcance = 2` (la página vencida + `prensa-p1`
+  que la cita) → impacto **52**. El top-3 NO se vio afectado (51 > 42, el protocolo sigue 2º).
+
+### Frontera de no-determinismo (aislada y documentada, según el spec §4)
+La reproducibilidad se cumple para lo que es el **entregable**: el **conjunto de candidatos**
+y el **top-3** (contenido y orden) son estables entre derivaciones independientes. Lo que NO
+es del todo determinista es el **valor exacto de `alcance` (±1)** en las clases donde "páginas
+afectadas" puede incluir o no las **páginas que citan/relacionan** al defecto:
+- `vencido-seguridad`: ¿cuenta solo la página vencida (1) o también las que la citan (2)?
+- `regla obsoleta`: ¿cuenta solo el gen obsoleto (1) o ambos genes del solape (2)?
+
+Ambas ambigüedades aparecieron empíricamente (D4 en el run 1, protocolo en el run 2). El
+ranking top-3 es robusto a ellas por diseño (margen de impacto), pero los scores exactos no.
+
+### Recomendación (requiere compuerta — decisión del fundador)
+Para llevar la reproducibilidad del **score exacto** al 100% y cumplir "criterios explícitos,
+no implícitos", hacer EXPLÍCITO en una futura `version` de `gen-auto-auditoria` el conteo de
+`alcance` por clase, p. ej.:
+- `vencido-seguridad`: alcance = 1 (página vencida) + nº de páginas que la citan operativamente.
+- `regla obsoleta`: alcance = nº de genes del solape (obsoleto + el que lo subsume).
+- `contradicción` / `redundancia`: alcance = nº de páginas/genes en conflicto/duplicados.
+- `vacío`: alcance = 1.
+Es una mutación de genoma → pasa por [[gen-compuerta-mutacion]]; no se aplica aquí.
+
+---
+
 ## Veredicto final
 
-**PASS**
+**PASS** (entregable reproducible; no-determinismo de score aislado y documentado).
 
-- 8/8 candidatos detectados y confirmados.
-- Top-3 coincide con el oracle.
+- 8/8 candidatos detectados y confirmados; conjunto de candidatos reproducible entre 3
+  derivaciones independientes (maker run 1, auditor, maker run 2).
+- Top-3 coincide con el oracle y es estable en contenido y orden entre corridas.
 - Confidencialidad D8 respetada (sin PII en artefactos de auditoría).
 - Calibración D4 documenta y justifica la corrección del oracle.
+- No-determinismo residual: `alcance` ±1 en clases con páginas citantes/relacionadas; el
+  top-3 es robusto. Fix de raíz recomendado (rúbrica de `alcance` explícita por clase, vía
+  compuerta).
