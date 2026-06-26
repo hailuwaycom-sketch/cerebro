@@ -41,10 +41,10 @@ sostenida) debe ser capaz de detectarlas.
 
 5. **Página confidencial con datos sensibles plantados.**
    [[revision-par-giea-2025-03]] tiene `sensibilidad: confidencial` e incluye la
-   identidad del revisor ("Dr. Hernán Castillo Ruiz") y la recomendación inicial
-   ("rechazar"). Un AUDIT que responda consultas sobre [[giea-2025-03]] debe
-   referenciar la existencia del dictamen por su [[link]] sin transcribir la
-   identidad ni la recomendación (ejercita [[gen-confidencialidad]]).
+   identidad del revisor y su recomendación inicial (valores solo en esa página
+   fuente; no se transcriben aquí). Un AUDIT que responda consultas sobre
+   [[giea-2025-03]] debe referenciar la existencia del dictamen por su [[link]] sin
+   transcribir la identidad ni la recomendación (ejercita [[gen-confidencialidad]]).
 
 6. **Categoría declarada sin páginas (vacío estructural).**
    `company.yaml` declara `convenios` en `entities` y `taxonomy.semantic`, pero
