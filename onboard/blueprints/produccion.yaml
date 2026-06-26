@@ -1,7 +1,7 @@
 # BLUEPRINT — sector PRODUCCIÓN / MANUFACTURA (autopartes, metalmecánica, ensamble, planta discreta).
 # Uso: copia este archivo a onboard/company.yaml, rellena la identidad (placeholders <...>), y aplica ONBOARD.
 # =====================================================================
-# Destilado del escenario simulado (sim/produccion). El genoma BASE (18 genes) ya cubre lo universal:
+# El genoma BASE ya cubre lo universal:
 # relaciones extensibles (relation_types), vigencia, confidencialidad, clase estable|evento,
 # entidad con estado, confianza por fuente y síntesis de volumen. Aquí solo va lo SECTOR-específico.
 # =====================================================================

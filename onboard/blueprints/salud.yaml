@@ -1,6 +1,6 @@
 # Blueprint SECTOR: salud — clínica ambulatoria / atención primaria + urgencias menores.
 # Cómo usarlo: copia este archivo a onboard/company.yaml, reemplaza los placeholders "<tu ...>"
-# por tus datos reales y corre ONBOARD. El genoma base (18 genes) ya cubre lo universal;
+# por tus datos reales y corre ONBOARD. El genoma base ya cubre lo universal;
 # aquí solo van los campos del manifiesto y el gen sector-específico que el base no cubre.
 # =====================================================================
 

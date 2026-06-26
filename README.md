@@ -47,11 +47,11 @@ De ahí, en co-construcción con **Claude Code**, se extendió la idea base:
 - Cada mutación pasa por una **compuerta** (modo híbrido: se propone → apruebas → se aplica →
   se audita).
 
-Y luego se **puso a prueba de verdad**: se simularon **5 industrias** (producción, agencia de
-marketing, bufete legal, clínica y e-commerce) con agentes en paralelo. Las fricciones que
-aparecían en varias industrias a la vez se convirtieron en **7 mutaciones** del genoma base,
-más un lote de coherencia y un gen de migración. El genoma pasó de 10 a **18 genes**, con toda
-su evolución auditada paso a paso en `genome/events.jsonl`.
+Y luego se **puso a prueba de verdad**: se validó en **múltiples sectores** (producción, agencia
+de marketing, bufete legal, clínica y e-commerce) con agentes en paralelo. Las fricciones que
+aparecían en varios sectores a la vez se convirtieron en **mutaciones del genoma base** —cada una
+propuesta, aprobada y **auditada paso a paso en `genome/events.jsonl`**—, endureciendo las reglas
+hasta hacerlas **reproducibles y deterministas**. *Mismo estado → mismo resultado.*
 
 ---
 
@@ -74,7 +74,7 @@ cerebro/
 │   ├── semantic/             # conocimiento consolidado
 │   └── procedural/           # SOPs y procesos
 ├── dashboards/               # paneles Dataview (capa de visualización opcional)
-├── sim/                      # 5 industrias simuladas (demos, datos ficticios)
+├── audit/                    # salidas de la operación AUDIT (corridas + propuestas)
 ├── .obsidian/                # preset Obsidian (opcional, removible)
 └── .claude/                  # hooks del loop de memoria
 ```
@@ -153,7 +153,7 @@ CEREBRO no existiría sin las ideas y herramientas de otros:
   convierte el grafo y el frontmatter en algo navegable y consultable.
 - **[Anthropic](https://www.anthropic.com) / Claude Code (Claude Opus 4.8)** — co-arquitecto
   de la extensión mutagénica: el genoma por genes, la compuerta de mutación, el `ONBOARD`
-  reproducible y la validación con 5 industrias simuladas.
+  reproducible y la validación en múltiples escenarios de industria.
 
 Y a la idea de fondo de toda la comunidad de *second brain* / PKM, que lleva años explorando
 cómo convertir notas sueltas en conocimiento conectado.
